@@ -46,7 +46,7 @@ In addition to weekly exercises, I am building small projects applying the learn
 
 ## 📬 Contact
 
-If you'd like to connect or collaborate, feel free to reach out on [LinkedIn](https://www.linkedin.com/) or open an issue.
+If you'd like to connect or collaborate, feel free to reach out to me on nallaramu4321@gmail.com or open an issue.
 
 ---
 

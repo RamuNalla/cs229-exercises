@@ -1,6 +1,6 @@
 # CS229 - Machine Learning (Stanford University)
 
-Welcome to my personal repository for **CS229: Machine Learning**, a course offered by Stanford University and taught by Professor Andrew Ng.
+Welcome to my personal repository for **CS229: Machine Learning**, a course offered by Stanford University.
 
 This repo contains my weekly coding exercises, notes, and project implementations as I go through the course.
 

@@ -124,7 +124,7 @@ model = LinearRegression()
 x_reshaped = x.reshape(-1,1)  ## Converts into a 2D array of size (100,1)
 model.fit(x_reshaped, y)
 
-joblib.dump(model, "linear_regression_model.joblib")
+joblib.dump(model, "week-1/saved_models/linear_regression_model.joblib")
 
 theta_0_sklearn = model.intercept_
 theta_1_sklearn = model.coef_[0]

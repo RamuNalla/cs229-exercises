@@ -1,6 +1,10 @@
 import numpy as np
 import sympy as sp
 import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+
+# ---------- Greadient Descent Implementation -----------------------------------------
+
 
 # Calculating Least mean Square cost function given training data and parameters
 def lms_cost_function(x, y , theta_0, theta_1, n):    
@@ -91,5 +95,38 @@ ax[1].set_xlabel("Iterations")
 ax[1].set_ylabel("Cost (log scale)")
 ax[1].set_yscale("log")
 ax[1].legend()
+
+
+
+# ---------- Normal Equation Implementation ----------------------------------
+
+def normal_equations(x, y):
+    X = np.column_stack((np.ones_like(x), x))   ## Added intercept column x_0
+
+    xt_x = X.T @ X   
+    xt_y = X.T @ y
+    theta_normal_equations = np.linalg.inv(xt_x) @ xt_y
+
+    return theta_normal_equations
+
+
+theta_normal_equations = normal_equations(x, y)
+print(f"Parameters from normal equations:")
+print(f"  θ₀ = {theta_normal_equations[0]:.3f}, θ₁ = {theta_normal_equations[1]:.3f}\n")
+
+
+
+
+# ---------- Sklearn Linear Regression ----------------------------------------
+
+model = LinearRegression()
+x_reshaped = x.reshape(-1,1)  ## Converts into a 2D array of size (100,1)
+model.fit(x_reshaped, y)
+
+theta_0_sklearn = model.intercept_
+theta_1_sklearn = model.coef_[0]
+
+print(f"Parameters from sklearn Linear Regression:")
+print(f"  θ₀ = {theta_0_sklearn:.3f}, θ₁ = {theta_1_sklearn:.3f}")
 
 plt.show()

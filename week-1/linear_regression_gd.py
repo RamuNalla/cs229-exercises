@@ -2,6 +2,7 @@ import numpy as np
 import sympy as sp
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
+import joblib
 
 # ---------- Greadient Descent Implementation -----------------------------------------
 
@@ -122,6 +123,8 @@ print(f"  θ₀ = {theta_normal_equations[0]:.3f}, θ₁ = {theta_normal_equatio
 model = LinearRegression()
 x_reshaped = x.reshape(-1,1)  ## Converts into a 2D array of size (100,1)
 model.fit(x_reshaped, y)
+
+joblib.dump(model, "linear_regression_model.joblib")
 
 theta_0_sklearn = model.intercept_
 theta_1_sklearn = model.coef_[0]

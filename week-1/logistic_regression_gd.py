@@ -125,7 +125,7 @@ accuracy_custom = accuracy_score(y, y_pred)
 # ---------- Sklearn Logistic Regression ------------------------------------------------
 
 model = LogisticRegression()
-model.fit(X, y.ravel())               # scikit-learn expects 1D array instead of a 2D vector, therefore ravel()
+model.fit(X, y.ravel())              # scikit-learn expects 1D array instead of a 2D vector, therefore ravel()
 
 y_pred_sklearn = model.predict(X)
 accuracy_sklearn = accuracy_score(y, y_pred_sklearn)

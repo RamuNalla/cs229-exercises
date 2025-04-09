@@ -1,6 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.datasets import make_blobs
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+
+
+# ---------- Greadient Descent Custom Implementation ------------------------------------------------
+
 
 # SIGMOID FUNCTION
 def sigmoid (x):
@@ -10,7 +16,6 @@ def sigmoid (x):
         1 / (1 + np.exp(-x)),
         np.exp(x) / (1 + np.exp(x))
     )                                                  ## Simple if-else condition is can be used for scalar, Here the sigmoid function inputs are vectorized (numpy arrays), therefore using np.where
-
 
 # LOSS FUNCTION IN LOGISTIC REGRESSION
 def log_loss_func(x, y, theta):
@@ -31,16 +36,16 @@ def grad_loss_function(x, y, theta):
     # grad_0 = np.sum(h_x - y) / n      # Note for derivative wrt theta_0, there will be no x (or as per Lecture-2, x_0 = 1)
     # grad_1 = np.sum((h_x - y)*x) / n
 
-    grad = (1/n)*(x.T @ (h_x - y))    # gradient will be [x1, x2, x3]*[h_x-y] ==> grad_1 = sum of (x1*(h_x - y))  Making x transpose and dot product with h_x - y yield same result.  Note grad is a vector with [grad_0, grad_1, grad_2]
+    grad = (1/n)*(x.T @ (h_x - y))    # Gradient will be [x1, x2, x3]*[h_x-y] ==> grad_1 = sum of (x1*(h_x - y))  Making x transpose and dot product with h_x - y yield same result.  Note grad is a vector with [grad_0, grad_1, grad_2]
 
     return grad
 
 # BATCH GRADIENT DESCENT FOR EACH LEARNING RATE
 def batch_gradient_descent(x, y, learning_rate, max_iters, tol):
     
-    theta = np.zeros((x.shape[1],1))      # Initialization, theta to have 1 column
+    theta = np.zeros((x.shape[1],1))      # Initialization, theta to have 1 column with length as number of features
 
-    n = x.shape[0]
+    n = x.shape[0]                        # number of data points
     log_loss_array = []
     iterations_array = []
 
@@ -54,30 +59,27 @@ def batch_gradient_descent(x, y, learning_rate, max_iters, tol):
         if i>50 and np.abs(log_loss_array[-1] - log_loss) < tol:              ## We can alose use np.sum(steps)/len(steps), but the steps could cancel each other, therefore norm is required
             print(f"Converged at iteration {i} for learning rate {learning_rate}")
             break
-        steps = steps.reshape(-1, 1)        # Steps is a 2D vector now with size (3,1) earlier it is an array with (3,)
-        theta -= steps        #  Gradient Ascent
-
         
+        steps = steps.reshape(-1, 1)        # Steps is now a 2D vector with size (3,1) earlier it is an array with (3,)
+        theta -= steps                      # Gradient Descent
+
         log_loss_array.append(log_loss)
         iterations_array.append(i)
 
     return theta, log_loss_array, iterations_array, i
 
 
-# ---------- Greadient Descent Implementation ------------------------------------------------
 
-X, y = make_blobs(n_samples = 200, centers = 2, n_features = 2, random_state = 42)   # 200 samples with 2 classes in the data. Total number of features are 2 meaning it is a 2D data, therefore theta vector will have theta_0, theta_1, theta_2
-X = np.c_[np.ones((X.shape[0], 1)), X]   #horizontally concatenates two arrays (columns), first one with all ones
-y = y.reshape(-1, 1)                     # y is a column vector
+X, y = make_blobs(n_samples = 400, centers = 2, n_features = 2, random_state = 42)   # 200 samples with 2 classes in the data. Total number of features are 2 meaning it is a 2D data, therefore theta vector will have theta_0, theta_1, theta_2
+X = np.c_[np.ones((X.shape[0], 1)), X]   # horizontally concatenates two arrays (columns), first one with all ones
+y = y.reshape(-1, 1)                     # y is a column vector now (2D vector)
 
-max_iters = 80000                          # Maximum Iterations
-tol = 1e-6                              # Tolerance limit for gradient descent
+max_iters = 80000                                    # Maximum Iterations
+tol = 1e-6                                           # Tolerance limit for gradient descent
 l_rates = [0.001, 0.01, 0.05, 0.08, 0.1]             # Learning rates
-colors = ['red', 'green', 'blue', 'grey', 'black']
+colors = ['red', 'green', 'blue', 'grey', 'orange']
 
 fig, ax = plt.subplots(1, 2, figsize=(14, 6))
-
-
 
 for lr, color in zip(l_rates, colors):
     
@@ -96,9 +98,9 @@ for lr, color in zip(l_rates, colors):
 
     xx, yy = np.meshgrid(np.linspace(x_min, x_max, 200),           # Creating a mesh grid between the minimum and maximum. xx will be 200 x 200 2D matrix
                          np.linspace(y_min, y_max, 200))
-                                                                              # xx.ravel() flattens the 2D matrix into 1d vector with length 40000
-    grid = np.c_[np.ones((xx.ravel().shape[0], 1)), xx.ravel(), yy.ravel()]   # Column stacking and therfore creating a grid with [1,x,y] value of all 200x200 points
-    probs = sigmoid(grid @ theta).reshape(xx.shape)                           # predicting the probability with passing the theta x point into sigmoid function
+                                                                              # xx.ravel() flattens the 2D matrix into 1D vector with length 40000
+    grid = np.c_[np.ones((xx.ravel().shape[0], 1)), xx.ravel(), yy.ravel()]   # Column stacking horizontally and therefore creating a grid with [1,x,y] value of all 200x200 points
+    probs = sigmoid(grid @ theta).reshape(xx.shape)                           # predicting the probability with passing the theta x all points into sigmoid function anc converting back it into 2D matrix with 200x200
 
     # Plot decision boundary (probability = 0.5)
     ax[1].contour(xx, yy, probs, levels=[0.5], colors=color, linestyles='solid', linewidths=2)   # It draws lines on (xx, yy) where probs exactly equals 0.5
@@ -109,15 +111,31 @@ ax[0].set_ylabel("Log Loss")
 ax[0].set_title(f"Log Loss Curve for Learning Rate {lr}")
 ax[0].legend()
 
-ax[1].scatter(X[:, 1][y[:,0] ==0], X[:, 2][y[:,0] == 0], color='blue', label='Class 0')    # Plotting the all x1, x2 where y=0 with blue dots
-ax[1].scatter(X[:, 1][y[:,0] ==1], X[:, 2][y[:,0] == 1], color='red', label='Class 1')     # Plotting all x1, x2 where y=1 with red dots
+ax[1].scatter(X[:, 1][y[:,0] == 0], X[:, 2][y[:,0] == 0], color='blue', label='Class 0')    # Plotting the all x1, x2 where y=0 with blue dots
+ax[1].scatter(X[:, 1][y[:,0] == 1], X[:, 2][y[:,0] == 1], color='red', label='Class 1')     # Plotting all x1, x2 where y=1 with red dots
 
 ax[1].set_xlabel("Feature 1")
 ax[1].set_ylabel("Feature 2")
 ax[1].set_title("Decision Boundaries for Different Learning Rates")
 ax[1].legend()
 
+y_pred = sigmoid(X @ theta) >= 0.5   # Assigning y values to 0 or 1 with checking if sigmoid function output is greater than 0.5
+accuracy_custom = accuracy_score(y, y_pred)
 
+# ---------- Sklearn Logistic Regression ------------------------------------------------
+
+model = LogisticRegression()
+model.fit(X, y.ravel())               # scikit-learn expects 1D array instead of a 2D vector, therefore ravel()
+
+y_pred_sklearn = model.predict(X)
+accuracy_sklearn = accuracy_score(y, y_pred_sklearn)
+                                                                
+probs_sklearn = model.predict_proba(grid)[:,1].reshape(xx.shape)    # Grid is a long 40000 x 3 matrix (all points in a line). proba function gives matrix with 2 columns. Column-0 gives the probability for class-0 and column-1 gives for class-1. After this reshaping back to 200x200 matrix for decision boundary
+
+ax[1].contour(xx, yy, probs_sklearn, levels=[0.5], colors = 'black', linestyles='solid', linewidths=2)
+
+print(f"Accuracy (Custom Implementation):  {accuracy_custom * 100:.2f}%")
+print(f"Accuracy (Sklearn Implementation): {accuracy_sklearn * 100:.2f}%")
 
 plt.show()
     

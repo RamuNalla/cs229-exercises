@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from sklearn.datasets import make_blobs
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
+import joblib
 
 
 # ---------- Greadient Descent Custom Implementation ------------------------------------------------
@@ -126,6 +127,8 @@ accuracy_custom = accuracy_score(y, y_pred)
 
 model = LogisticRegression()
 model.fit(X, y.ravel())              # scikit-learn expects 1D array instead of a 2D vector, therefore ravel()
+
+joblib.dump(model, "week-1/saved_models/logistic_regression_model.joblib")
 
 y_pred_sklearn = model.predict(X)
 accuracy_sklearn = accuracy_score(y, y_pred_sklearn)

@@ -34,7 +34,7 @@ def grad_loss_function(x, y, theta):
     h_x = sigmoid(g_x)
 
     # grad_0 = np.sum(h_x - y) / n      # Note for derivative wrt theta_0, there will be no x (or as per Lecture-2, x_0 = 1)
-    # grad_1 = np.sum((h_x - y)*x) / n
+    # grad_1 = np.sum((h_x - y)*x) / n  # Grad is summation of entire dataset therefore x.T will ensure dot product of all datasamples
 
     grad = (1/n)*(x.T @ (h_x - y))    # Gradient will be [x1, x2, x3]*[h_x-y] ==> grad_1 = sum of (x1*(h_x - y))  Making x transpose and dot product with h_x - y yield same result.  Note grad is a vector with [grad_0, grad_1, grad_2]
 
@@ -60,7 +60,7 @@ def batch_gradient_descent(x, y, learning_rate, max_iters, tol):
             print(f"Converged at iteration {i} for learning rate {learning_rate}")
             break
         
-        steps = steps.reshape(-1, 1)        # Steps is now a 2D vector with size (3,1) earlier it is an array with (3,)
+        steps = steps.reshape(-1, 1)        # Steps is now a 2D vector with size (3,1) earlier it is an array with (3,). Note that theta is also a 2D vector above when initialized with zeroes
         theta -= steps                      # Gradient Descent
 
         log_loss_array.append(log_loss)
@@ -70,7 +70,7 @@ def batch_gradient_descent(x, y, learning_rate, max_iters, tol):
 
 
 
-X, y = make_blobs(n_samples = 400, centers = 2, n_features = 2, random_state = 42)   # 200 samples with 2 classes in the data. Total number of features are 2 meaning it is a 2D data, therefore theta vector will have theta_0, theta_1, theta_2
+X, y = make_blobs(n_samples = 400, centers = 2, n_features = 2, random_state = 42)   # 400 samples with 2 classes in the data. Total number of features are 2 meaning it is a 2D data, therefore theta vector will have theta_0, theta_1, theta_2
 X = np.c_[np.ones((X.shape[0], 1)), X]   # horizontally concatenates two arrays (columns), first one with all ones
 y = y.reshape(-1, 1)                     # y is a column vector now (2D vector)
 
@@ -111,7 +111,7 @@ ax[0].set_ylabel("Log Loss")
 ax[0].set_title(f"Log Loss Curve for Learning Rate {lr}")
 ax[0].legend()
 
-ax[1].scatter(X[:, 1][y[:,0] == 0], X[:, 2][y[:,0] == 0], color='blue', label='Class 0')    # Plotting the all x1, x2 where y=0 with blue dots
+ax[1].scatter(X[:, 1][y[:,0] == 0], X[:, 2][y[:,0] == 0], color='blue', label='Class 0')    # Plotting all x1, x2 where y=0 with blue dots
 ax[1].scatter(X[:, 1][y[:,0] == 1], X[:, 2][y[:,0] == 1], color='red', label='Class 1')     # Plotting all x1, x2 where y=1 with red dots
 
 ax[1].set_xlabel("Feature 1")

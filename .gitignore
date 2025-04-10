@@ -4,9 +4,9 @@ week-1/saved_models/*.joblib
 # (Optional) Ignore all saved_models folders recursively
 # saved_models/
 
-# Ignore Python cache files
-# __pycache__/
-# *.py[cod]
+Ignore Python cache files
+week-1/src/__pycache__/
+*.py[cod]
 
 # # Ignore Jupyter Notebook checkpoints (if any)
 # .ipynb_checkpoints/

@@ -1,4 +1,5 @@
 📘 Week 1 – Linear Regression & Logistic Regression
+
 This folder contains my coding exercises and projects from Week 1 of Stanford's CS229: Machine Learning course.
 
 📚 Topics Covered:
@@ -6,6 +7,8 @@ This folder contains my coding exercises and projects from Week 1 of Stanford's 
     ✅ Linear Regression
 
     ✅ Logistic Regression
+
+    ✅ Scikit Learn Implementation
 
     ✅ Cost Function Visualization
 

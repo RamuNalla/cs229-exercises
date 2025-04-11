@@ -1,10 +1,9 @@
 import numpy as np
-import sympy as sp
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 import joblib
 
-# ---------- Greadient Descent Implementation -----------------------------------------
+# ---------- Gradient Descent Implementation ------------------------------------------------------------------
 
 
 # Calculating Least mean Square cost function given training data and parameters

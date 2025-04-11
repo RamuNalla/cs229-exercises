@@ -1,18 +1,36 @@
-# Week 1 – Linear Regression
+📘 Week 1 – Linear & Logistic Regression
+This folder contains my coding exercises and projects from Week 1 of Stanford's CS229: Machine Learning course.
 
-This folder contains my coding exercises from **Week 1** of Stanford's [CS229: Machine Learning](https://cs229.stanford.edu/) course.
+📚 Topics Covered:
 
-### Topics Covered
-- Linear Regression
+    ✅ Linear Regression
 
-### Files
-- 
+    ✅ Logistic Regression
 
-### Dependencies
-- Python 3.x
-- NumPy
-- Matplotlib (for visualization)
+    ✅ Cost Function Visualization
 
-You can install dependencies using:
+    ✅ Gradient Descent Implementation (Batch)
 
-pip install numpy matplotlib
+    ✅ Model Prediction and Plotting
+
+
+📁 Files Included
+    linear_regression_gd.py – Implements Linear Regression from scratch using NumPy
+    logistic_regression_gd.py – Implements Logistic Regression and sigmoid function
+    app.py – FastAPI application with endpoints for predictions
+    requests.py – Sends test requests to the FastAPI server
+    requirements.txt – All required Python libraries
+
+💻 Dependencies
+    
+    Python 3.x
+    NumPy
+    Matplotlib
+    scikit-learn
+    FastAPI
+    Uvicorn
+    Pydantic
+    joblib
+    requests (for testing the API)
+
+Visit http://127.0.0.1:8000/docs to interact with the API.

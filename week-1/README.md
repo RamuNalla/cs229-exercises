@@ -15,11 +15,11 @@ This folder contains my coding exercises and projects from Week 1 of Stanford's 
 
 
 📁 Files Included
-    linear_regression_gd.py – Implements Linear Regression from scratch using NumPy
-    logistic_regression_gd.py – Implements Logistic Regression and sigmoid function
-    app.py – FastAPI application with endpoints for predictions
-    requests.py – Sends test requests to the FastAPI server
-    requirements.txt – All required Python libraries
+- ✅ `linear_regression_gd.py` – Implements Linear Regression from scratch using NumPy
+- ✅ `logistic_regression_gd.py` – Implements Logistic Regression and sigmoid function
+- ✅ `app.py` – FastAPI application with endpoints for predictions
+- ✅ `requests.py` – Sends test requests to the FastAPI server
+- ✅ `requirements.txt` – All required Python libraries
 
 💻 Dependencies
     

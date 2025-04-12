@@ -1,8 +1,13 @@
 # Ignore model files
 week-1/saved_models/*.joblib
+week-2/logistic_regression_wandb_project/*.pkl
 
 # (Optional) Ignore all saved_models folders recursively
 # saved_models/
+
+# Ignore WandB and MLflow files
+wandb/
+mlruns/
 
 Ignore Python cache files
 week-1/src/__pycache__/

@@ -15,6 +15,7 @@ This repo contains my weekly coding exercises, notes, and project implementation
 ## 🧠 Topics Covered
 
 - Linear Regression
+- Logistic Regression
 
 
 ---

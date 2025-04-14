@@ -9,7 +9,7 @@ import joblib  # to save the model as a file
 wandb.init(
     project="logistic_regression_project",  # Name of the project on wandb.ai
     config={                                # Dictionary of hyperparameters to track
-        "C": 0.1,
+        "C": 0.5,
         "solver": "lbfgs"
     }
 )

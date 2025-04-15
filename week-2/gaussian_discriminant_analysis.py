@@ -1,6 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import multivariate_normal
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.metrics import accuracy_score
+
 
 #-----------------------------MANUAL GAUSSIAN DESCRIMINAT ANALYSIS -------------------------------------------
 
@@ -94,10 +97,27 @@ y_pred = predict_gda(X, phi, mu_0, mu_1, sigma)                        # predict
 
 accuracy = np.mean(y_pred == y)
 
-print("Prediction Results on Training Data:")
+print("Manual Prediction Results on Training Data:")
 print(f"  Predictions (first 10): {y_pred[:10]}")
 print(f"  Actual labels (first 10): {y[:10].astype(int)}")
-print(f"  Accuracy: {accuracy:.4f}")
+print(f"  Scratch model Accuracy: {accuracy:.4f}")
+print("-" * 50)
+
+
+
+
+#-----------------------------SKLEARN LINEAR DESCRIMINAT ANALYSIS -------------------------------------------
+
+lda = LinearDiscriminantAnalysis()         # Linear Discriminant analysis 
+lda.fit(X, y)
+
+y_pred_lda = lda.predict(X)
+accuracy_lda = accuracy_score(y, y_pred_lda)
+
+print("Sklearn Prediction Results on Training Data:")
+print(f"  Predictions (first 10): {y_pred_lda[:10].astype(int)}")
+print(f"  Actual labels (first 10): {y[:10].astype(int)}")
+print(f"  Sklearn Accuracy: {accuracy_lda:.4f}")
 print("-" * 50)
 
 
@@ -124,13 +144,54 @@ try:
 
     # z is just 0s and 1s. levels=[0.5] is not referring to values in z that equal 0.5. Instead, it's telling the contour function to draw lines where the values in z transition between less than 0.5 and greater than 0.5.
 
-    plt.title('GDA Decision Boundary with Shared Covariance')
+    z_lda = lda.predict(np.c_[xx1.ravel(), xx2.ravel()])
+    z_lda = z_lda.reshape(xx1.shape)
+    plt.contour(xx1, xx2, z_lda, levels=[0.5], colors='green', linestyles='-', linewidths=2)
+
+    from matplotlib.lines import Line2D
+
+    # Custom legend with all labels
+    custom_lines = [
+    Line2D([0], [0], color='black', linestyle='--', lw=2),
+    Line2D([0], [0], color='green', linestyle='-', lw=2)
+    ]
+
+    plt.legend(custom_lines + [plt.scatter([], [], c='blue', alpha=0.6), plt.scatter([], [], c='red', alpha=0.6)], 
+                ['GDA Decision Boundary', 'LDA Decision Boundary', 'Class 0 (Actual)', 'Class 1 (Actual)']
+           )
+
+    plt.title('Comparison of GDA and LDA Decision Boundaries')
     plt.xlabel('Feature 1')
     plt.ylabel('Feature 2')
-    plt.legend()
     plt.grid(True)
-    plt.show()
 
 except ImportError:
     print("Matplotlib not found. Skipping visualization.")
 
+
+# Parameters Comparison between Manual model and sklearn model
+
+print("Model Parameters Comparison:")
+print("GDA Parameters:")
+print(f"  Class prior probabilities:")
+print(f"    P(y=0): {1-phi:.4f}")
+print(f"    P(y=1): {phi:.4f}")
+print(f"  Class means:")
+print(f"    Class 0: {mu_0}")
+print(f"    Class 1: {mu_1}")
+print(f"  Shared covariance matrix:")
+print(sigma)
+
+print("\nLDA Parameters:")
+print(f"  Class prior probabilities:")
+print(f"    P(y=0): {lda.priors_[0]:.4f}")
+print(f"    P(y=1): {lda.priors_[1]:.4f}")
+print(f"  Class means:")
+print(f"    Class 0: {lda.means_[0]}")
+print(f"    Class 1: {lda.means_[1]}")
+print(f"  Coefficients:")
+print(f"    {lda.coef_}")
+print(f"  Intercept:")
+print(f"    {lda.intercept_}")
+
+plt.show()

@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.stats import norm
 
-class GaussianNaiveBayes:                              # Without init() you cannot accept constructor parameters, when creating instances
+class GaussianNaiveBayes:                      # Without init() you cannot accept constructor parameters, when creating instances
     
     def fit(self, X, y):                       # Function for training of naive bayes model (finding parameters for mean and variances for each feature per class)
 
@@ -35,6 +35,7 @@ class GaussianNaiveBayes:                              # Without init() you cann
         y_pred = [self.predict_single(x) for x in X]    # for each row in X, run the predict single function to estimate the class for each data point
         return y_pred
 
+
     def predict_single(self, x):               # function to predict class for a single sample/datapoint, we will return all posterior probabilities in a list and predict the highest posterior probability class as the y for that sample 
         
         posteriors = []                        # list to store the posterior prob for the data point x
@@ -46,7 +47,7 @@ class GaussianNaiveBayes:                              # Without init() you cann
             log_prior_c = np.log(self._priors[c])      # log(P(y=c)) for each class
 
             log_likelihood_c = np.sum(norm.logpdf(x, loc = self._means[c], scale = np.sqrt(self._variances[c])))
-            # The above function calculates sum of all the P(xi/y=c). P(x1/y=c) is calculated by probability distribution function with mean of that feature for c class, and the standard deviation of the feature vector for that class c
+            # The above function calculates sum of all the P(xi/y=c). P(xi/y=c) is calculated by probability distribution function with mean of that feature for c class, and the standard deviation of the feature vector for that class c
             # the question is where does each feature of sample x falls from the feature mean in the normal distribution function with a (feature mean and feature standard deviation for that class)
            
             posterior_c = log_prior_c + log_likelihood_c

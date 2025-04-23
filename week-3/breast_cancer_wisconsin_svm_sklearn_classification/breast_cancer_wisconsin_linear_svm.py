@@ -11,7 +11,7 @@ df = pd.read_csv("cancer_data.csv")
 df.isnull().sum()
 df.dropna(axis=1, inplace=True)                           # Data Cleanup from jupyter notebook file
 
-features = ['radius_mean', 'texture_mean']                # Selecting only two important features
+features = ['radius_mean', 'texture_mean']                # Selecting only two important features to make the 2D plot
 target = 'diagnosis'
 
 df = df[features + [target]]                              # Modifying the dataset to include features and target
@@ -30,8 +30,15 @@ def plot_svm_boundary(svm_model, X, y, title = "SVM Decision Boundary and Margin
 
     plt.figure(figsize=(8, 6))
     
+    # Plot the data points with blue for 1 and green for 0
     plt.scatter(X[:, 0], X[:, 1], c=y, s=50, cmap='winter', edgecolors='k')    #c=y means set the color of each point based on label 'y', s=50 means size of each point in the scatter plot
 
+
+    # Plotting the decision boundary with decision function, 
+    # Decision function gives the signed distance from each point to the distance boundary, Z = 0, point lies on the decision boundary
+    # Z = +1, point lies exactly 1 unit away (in the feature space) on the positive class side
+    # The Z = +1/-1 points are edges of the margin and the band the SVM maximises, ideally in a perfectly separable dataset, there should be no data points that should fall inside the margin
+    # The values of decision function is 0 for decision boundary
     ax = plt.gca()                   # Get current axes
     xlim = ax.get_xlim()             # xlim is an array with min and max limits in an array
     ylim = ax.get_ylim()
@@ -46,6 +53,20 @@ def plot_svm_boundary(svm_model, X, y, title = "SVM Decision Boundary and Margin
 
     ax.contour(XX, YY, Z, colors='k', levels=[-1, 0, 1], alpha=0.5, linestyles=['--', '-', '--'])    # contour lines with Z = -1, 0, 1, Z actually contains signed distance, therefore floating point values. We want contour lines only for -1, 0, 1, therefore, 3 levels are mentioned in the contour plot
 
+
+    # Support vectors are the data points exactly on Z = +1 and -1. 
+    # No data point should lie within the margin because of the hard-margin SVM. All SVs should lie on the margin
+    # In the plots shown, some data points lies within the margin due to Soft-Margin SVM
+    
+    # Support vectors include:
+    # Points exactly on the margin (Z = ±1).
+    # And also points inside the margin (|Z| < 1) or even on the wrong side (Z has the wrong sign) in the soft-margin setting.
+
+    # C controls the trade-off between margin size and classification error.
+    # Smaller C → larger margin, more violations allowed.
+    # Larger C → stricter margin, fewer violations allowed. Note in the code below C = 1000
+
+
     support_vectors = svm_model.support_vectors_                   # Get the support vectors from the trained model, the size of support_vectors is (n_support, 2) {2D dataset}
 
     ax.scatter(support_vectors[:,0], support_vectors[:,1], s=100, linewidth=1, facecolors="none", edgecolors='k', label='Support Vectors')
@@ -58,8 +79,6 @@ def plot_svm_boundary(svm_model, X, y, title = "SVM Decision Boundary and Margin
     ax.set_ylim(ylim)
     plt.grid(True, linestyle='--', alpha=0.6)
     plt.show()
-
-
 
 
 
@@ -81,7 +100,6 @@ svm_model.fit(X_train_scaled, y_train)
 
 
 y_pred = svm_model.predict(X_test_scaled)
-
 accuracy = accuracy_score(y_test, y_pred)
 
 print(f"Test Accuracy: {accuracy * 100:.2f}%")

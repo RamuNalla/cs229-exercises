@@ -90,7 +90,7 @@ X_test_scaled = scaler.transform(X_test)                # We don't want the mode
 
 # Training the model
 
-svm_model = SVC(kernel='linear', C=1000)    
+svm_model = SVC(kernel='linear', C=100)    
 # kerner = linear --> the model will try to find linear decision boundary
 # c = 1000 --> regularization parameter (soft margin parameter), it controls trade-off between maximizing the margin and minimizing the classification error
 # Large value of C means the model will try to classify all training examples correctly (it might result in smaller margib, overfitting risk)

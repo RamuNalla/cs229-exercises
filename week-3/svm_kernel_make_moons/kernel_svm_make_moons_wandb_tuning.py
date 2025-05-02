@@ -190,7 +190,7 @@ for gamma, C in rbf_params:
         "C": C
     }
     
-    #Some of gammas are 'scale, therefore handling it
+    #Some of gammas are 'scale', therefore handling it
     if gamma == 'scale':
         gamma_str = gamma
     else:

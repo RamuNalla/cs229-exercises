@@ -20,11 +20,14 @@ print(f"Split data: Train={X_train.shape}, Test={X_test.shape}")
 
 # Data normalization
 
-scaler = StandardScaler()
-scaler.fit(X_train)
+def scale_features(X):
+    X = np.array(X)
+    mean = np.mean(X, axis=0)       # mean per column
+    std = np.std(X, axis=0)         # std per column
+    return (X - mean) / std
 
-X_train_scaled = scaler.transform(X_train)                                   # Scaling both X_train and X_tets
-X_test_scaled = scaler.transform(X_test)  
+X_train_scaled = scale_features(X_train)                                   # Scaling both X_train and X_tets
+X_test_scaled = scale_features(X_test)  
 
 
 
@@ -40,7 +43,7 @@ def plot_svm_boundary(svm_model, X_train, y_train, X_test, y_test, title = "SVM 
 
     xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
 
-    xy = scaler.transform(np.c_[xx.ravel(), yy.ravel()])
+    xy = scale_features(np.c_[xx.ravel(), yy.ravel()])
   
     Z = svm_model.predict(xy).reshape(xx.shape)
 

@@ -100,6 +100,10 @@ grid = GridSearchCV(SVC(random_state=42), param_grid = params_grid, cv=5, scorin
 # Run the model on the dataset
 grid.fit(X_train_scaled, y_train)
 
+# GridsearchCV run cross-validaiton internally for each hyperparameter combination
+# After finding the best combination, it AUTOMATICALLY retrains the best model on entore training dataset. This model is stored in grid.best_estimator_
+
+
 print("\n--- GridSearchCV Results ---")
 print(f"Best Parameters found: {grid.best_params_}")
 print(f"Best Cross-Validation Score (Mean Accuracy): {grid.best_score_:.4f}")

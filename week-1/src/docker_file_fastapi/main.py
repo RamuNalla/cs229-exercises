@@ -43,5 +43,11 @@ def read_root():
   # Or verify using this http://127.0.0.1:8000/docs
 
 
-  # docker build -t fastapi-ml-app .
-  # docker run -d -p 8000:8000 fastapi-ml-app
+  # docker build -t fastapi-ml-app1 .            # Builds an image from dockerfile
+  # docker run -d -p 8000:8000 fastapi-ml-app    # Run a container (live, running instance of that image), can also run directly from docker desktop.
+  # 
+  # 
+  # 
+  # 
+  # docker ps          which containers are currently running
+  # docker stop <container ID> will stop the container (you can do this from docker desktop as well) 

@@ -25,7 +25,7 @@ class KMeansScratch:
 
         # centroids_: Final cluster centroids (k, n_features)
         # labels_ : cluster labels assigned to each data point (n_samples,)
-        # intertia_ : sum of squared dustances of samples to closest cluster center
+        # inertia_ : sum of squared dustances of samples to closest cluster center
         # n_iter_: Number of iterations run
         self.centroids_ = None
         self.labels_ = None
@@ -33,7 +33,7 @@ class KMeansScratch:
         self.n_iter = 0
 
 
-    def _initialize_centroids(self, X):           # Initialize centroids by randomly chossing k_data points from X
+    def _initialize_centroids(self, X):           # Initialize centroids by randomly choosing k_data points from X
 
         if self.random_state is not None:
             np.random.seed(self.random_state)     # Set seed for reproducibility
